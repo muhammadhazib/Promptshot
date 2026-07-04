@@ -1,0 +1,11 @@
+Save the three proof images into this folder with these exact names:
+
+  proof-1.jpg  ->  cream/brown canvas sneakers styled on the black chair (brown backdrop)
+  proof-2.jpg  ->  model holding the black NOIR ELYSEE perfume bottle (golden-hour light)
+  proof-3.jpg  ->  OBSIDIAN NOIR engraved bottle splash shot (dark background)
+
+.jpg, .png or .webp all work — if you use another extension, update the three
+<img src="img/proof-N.jpg"> paths in index.html to match.
+
+Until a file exists, the page shows a dashed "save image as img/proof-N.jpg"
+slot in its place (nothing looks broken). Delete this file once done.

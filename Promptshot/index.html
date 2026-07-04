@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ===== SEO meta (from Stage 5 copy deck — docs/landing-page-copy.md) ===== -->
+  <title>Free AI Product Photography &amp; UGC Ad Prompt Builder</title>
+  <meta name="description" content="Build tested AI prompts for product photos & UGC ads in 30 seconds. Pick product, platform & style — get a ready prompt for any AI generator. Free.">
+  <!-- TODO: set real domain before launch -->
+  <link rel="canonical" href="https://promptshot.example.com/">
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PromptShot — Free AI Product Photography & UGC Ad Prompt Builder">
+  <meta property="og:description" content="Build tested AI prompts for product photos & UGC ads in 30 seconds. Pick product, platform & style — get a ready prompt for any AI generator. Free.">
+  <meta property="og:url" content="https://promptshot.example.com/">
+  <!-- TODO: create a 1200x630 OG image and set og:image before launch -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Favicon: inline SVG aperture mark, no external file needed -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230b0d12'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23ff8a3c' stroke-width='2'/%3E%3Cpath d='M16 9l5 12M16 9l-5 12M9.5 13.5h13M9.5 18.5h13' stroke='%23ff8a3c' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- ===== Structured data: FAQ (AEO layer) ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an AI product photography prompt builder?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It's a tool that assembles a complete, detailed text prompt for AI image generators by letting you select your product type, platform, and visual style — instead of writing prompts manually or copying generic examples."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do these prompts work with Midjourney / GPT Image / ImagineArt?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. PromptShot outputs plain-text prompts tuned to work across major AI image tools, including GPT Image, ImagineArt, Freepik, Midjourney, and Flux."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is PromptShot really free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — the builder is free with no sign-up. PromptShot earns through partnerships with some of the AI tools we link to (clearly marked), which keeps the builder free for you."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What makes a good product photography prompt?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Specificity: product material and finish, lighting setup, camera angle, background/scene, and — for ads — platform-safe composition so text and hooks stay visible. The builder handles all five for you."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PromptShot",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Free interactive prompt builder for AI product photography and UGC ads. Pick product, platform and style — get a battle-tested prompt for any AI image generator.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ===================== Header ===================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="PromptShot home">
+        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 9l5 12M16 9l-5 12M9.5 13.5h13M9.5 18.5h13" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+        Prompt<span>Shot</span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="#builder">Builder</a>
+        <a href="#features">Why PromptShot</a>
+        <a href="#ai-tools">AI Tools</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-primary btn-sm" href="#builder">Build a prompt</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== Hero ===================== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Free · No sign-up · Works with any AI image tool</p>
+          <h1>Build Studio-Grade Product Ad Prompts in 30&nbsp;Seconds</h1>
+          <p class="sub">PromptShot is a free, interactive prompt builder for AI product photography and UGC ads. Pick your product, platform, and style — get a battle-tested prompt that works in any AI image generator. No sign-up. No guesswork.</p>
+          <div class="cta-group">
+            <a class="btn btn-primary btn-lg" href="#builder">Build My Prompt — Free →</a>
+          </div>
+          <p class="microcopy">Works with ImagineArt, Freepik, Midjourney, GPT&nbsp;Image &amp; more.</p>
+        </div>
+
+        <!-- Decorative sample output card: shows what the tool produces -->
+        <div class="hero-card" aria-hidden="true">
+          <div class="hero-card-head">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="hero-card-title">promptshot · tiktok ad · clean studio</span>
+          </div>
+          <p class="hero-card-body">Professional studio product photograph of a <mark>matte black snapback cap with an embroidered gold logo</mark>, crisp fabric texture and stitching detail… three-point softbox lighting, subtle rim light tracing the silhouette… vertical 9:16 frame, product in the upper two-thirds — <mark>bottom quarter kept clear for TikTok's CTA overlay</mark>…</p>
+          <div class="hero-card-foot">
+            <span class="chip">9:16</span>
+            <span class="chip chip-accent">✓ ad-safe composition</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Problem ===================== -->
+    <section class="section section-problem">
+      <div class="container narrow">
+        <h2>Your product photos aren't the problem. Your prompts are.</h2>
+        <p>You've seen the ads: studio lighting, perfect shadows, scroll-stopping lifestyle scenes — all AI-generated. So you open an AI image tool, type "professional photo of my product"... and get something that looks like a 2015 stock photo.</p>
+        <p>Here's what nobody tells you: the AI isn't the skill. <strong>The prompt is.</strong></p>
+        <p>Copy-paste prompt lists don't fix this. You paste someone's "marble counter, soft light" example, swap in your product, and it falls apart — because a prompt written for a perfume bottle doesn't work for a snapback cap, and a prompt built for an Instagram feed post gets its hook buried under TikTok's ad UI.</p>
+        <p>So you burn credits. You burn hours. And your competitor's AI ads keep outperforming yours.</p>
+      </div>
+    </section>
+
+    <!-- ===================== Solution / THE BUILDER ===================== -->
+    <section class="section section-builder" id="builder">
+      <div class="container">
+        <div class="section-head narrow">
+          <h2>A prompt builder, not another prompt list</h2>
+          <p>PromptShot assembles your prompt the way a working ad designer would — because it's built from prompts used in real client ad campaigns, not scraped examples.</p>
+        </div>
+
+        <div class="builder" id="promptshot-builder">
+          <div class="builder-controls">
+
+            <fieldset class="step">
+              <legend><span class="step-num">1</span> Pick your product type</legend>
+              <div class="pills" id="product-pills" role="group" aria-label="Product type"></div>
+              <div class="field">
+                <label for="product-desc">Describe your product <span class="hint-inline">(recommended — the more specific, the better the shot)</span></label>
+                <input type="text" id="product-desc" name="product-desc" maxlength="140" autocomplete="off"
+                       placeholder="e.g. matte black snapback cap with an embroidered gold logo">
+              </div>
+            </fieldset>
+
+            <fieldset class="step">
+              <legend><span class="step-num">2</span> Pick your platform &amp; format</legend>
+              <p class="step-note">Prompts adjust for each platform's real safe zones and ad UI, so your hook never hides behind a CTA button.</p>
+              <div class="pills" id="platform-pills" role="group" aria-label="Platform and format"></div>
+              <p class="compat-note" id="compat-note" hidden></p>
+            </fieldset>
+
+            <fieldset class="step">
+              <legend><span class="step-num">3</span> Pick your style</legend>
+              <div class="pills" id="style-pills" role="group" aria-label="Visual style"></div>
+            </fieldset>
+
+          </div>
+
+          <div class="builder-output">
+            <div class="output-head">
+              <span class="output-title">Your prompt</span>
+              <span class="chip" id="aspect-chip">9:16</span>
+              <span class="output-count" id="word-count"></span>
+            </div>
+            <p class="output-text" id="prompt-output" aria-live="polite"></p>
+            <label class="mj-toggle">
+              <input type="checkbox" id="mj-mode">
+              Midjourney mode <span class="hint-inline">(appends --ar and --no flags)</span>
+            </label>
+            <div class="output-actions">
+              <button class="btn btn-primary" id="copy-btn" type="button">Copy prompt</button>
+              <div class="generate-group">
+                <span class="generate-label">or generate with:</span>
+                <div class="generate-btns" id="generate-btns"></div>
+              </div>
+            </div>
+            <p class="disclosure-micro">↗ partner links — PromptShot may earn a commission at no extra cost to you. That's what keeps the builder free.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Features ===================== -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head narrow">
+          <h2>Why PromptShot beats prompt lists and generic builders</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Interactive, not copy-paste.</h3>
+            <p>Static prompt pages give you 25 examples and wish you luck. PromptShot builds a prompt for <em>your</em> product, platform, and style — thousands of combinations, zero editing.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Made for ads, not just pretty pictures.</h3>
+            <p>Generic prompt builders know "Rembrandt lighting." They don't know that a TikTok ad's CTA button eats the bottom of your frame. PromptShot writes prompts that keep hooks, logos, and text in the visible zone of each platform.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Battle-tested on real campaigns.</h3>
+            <p>Every prompt recipe started life in actual client ad work for e-commerce brands — refined by what buyers approved, not what looked cool in a demo.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Works with any AI generator.</h3>
+            <p>PromptShot output is plain text tuned for GPT Image, ImagineArt, Freepik, Midjourney, Flux, and more. No lock-in to one platform's credits.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Free, private, no sign-up.</h3>
+            <p>Open the page, build, copy. No account wall, no watermark, no "3 free credits." The whole builder runs in your browser — your product ideas never touch a server.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Social proof (placeholder strip) ===================== -->
+    <section class="section section-proof">
+      <div class="container narrow">
+        <h2>Prompts that already sell products</h2>
+        <!-- PLACEHOLDER: swap this strip for 3 testimonial cards as Fiverr reviews arrive.
+             Card format: "★★★★★ + one-line result + buyer country."
+             Also planned: "X prompts built" counter + gig review score strip. -->
+        <p class="proof-strip">Built from prompts used in real ad campaigns for <strong>boxing gear</strong>, <strong>fashion accessories</strong> &amp; <strong>home brands</strong>. Every shot below was generated from a prompt like the ones this builder writes.</p>
+        <div class="proof-images">
+          <figure class="proof-figure" data-missing="save image as img/proof-1.jpg">
+            <img src="img/proof-1.jpg" loading="lazy"
+                 alt="AI-generated lifestyle ad shot: cream canvas sneakers with brown flame swoosh, styled on a black chair against a warm brown studio backdrop"
+                 onerror="this.closest('figure').classList.add('missing')">
+            <figcaption><span class="proof-style">Lifestyle scene</span> · footwear ad creative</figcaption>
+          </figure>
+          <figure class="proof-figure" data-missing="save image as img/proof-2.jpg">
+            <img src="img/proof-2.jpg" loading="lazy"
+                 alt="AI-generated fragrance ad: model in golden-hour light holding a black Noir Elysée eau de parfum bottle with gold cap"
+                 onerror="this.closest('figure').classList.add('missing')">
+            <figcaption><span class="proof-style">Lifestyle model shot</span> · fragrance ad</figcaption>
+          </figure>
+          <figure class="proof-figure" data-missing="save image as img/proof-3.jpg">
+            <img src="img/proof-3.jpg" loading="lazy"
+                 alt="AI-generated splash shot: ornate engraved Obsidian Noir perfume bottle with glowing amber and blue panels, frozen water splash on a dark backdrop"
+                 onerror="this.closest('figure').classList.add('missing')">
+            <figcaption><span class="proof-style">Splash shot</span> · dark studio fragrance ad</figcaption>
+          </figure>
+        </div>
+        <!-- PLACEHOLDER: swap figures for testimonial cards as Fiverr reviews arrive
+             ("★★★★★ + one-line result + buyer country") -->
+
+      </div>
+    </section>
+
+    <!-- ===================== Affiliate AI tools ===================== -->
+    <section class="section" id="ai-tools">
+      <div class="container">
+        <div class="section-head narrow">
+          <h2>The AI tools we build prompts for</h2>
+          <p>Every PromptShot prompt is plain text tuned to run in any of these generators — no lock-in. These are the tools we reach for in real client ad work. Partner links are marked ↗.</p>
+        </div>
+        <div class="tool-grid" id="ai-tools-grid">
+          <!-- rendered by js/app.js from the GENERATORS config -->
+          <noscript><p>Enable JavaScript to see the tool directory — or jump straight to <a href="https://www.imagine.art/" rel="noopener">ImagineArt</a>, <a href="https://www.freepik.com/ai/image-generator" rel="noopener">Freepik</a>, <a href="https://chatgpt.com/" rel="noopener">GPT Image</a> or <a href="https://www.midjourney.com/" rel="noopener">Midjourney</a>.</p></noscript>
+        </div>
+        <p class="disclosure-micro center">↗ partner links — PromptShot may earn a commission at no extra cost to you. That's what keeps the builder free.</p>
+      </div>
+    </section>
+
+    <!-- ===================== Secondary CTA (gig funnel) ===================== -->
+    <section class="section section-gig">
+      <div class="container narrow gig-card">
+        <h2>Want it done for you?</h2>
+        <p>Prompts are the recipe — but if you'd rather skip the kitchen, I create complete AI UGC ad packages (statics + animated Reels + hooks) for e-commerce brands.</p>
+        <!-- TODO: replace # with the real Fiverr gig URL -->
+        <a class="btn btn-secondary" href="#" data-placeholder="fiverr-gig" rel="noopener">Get Custom Ad Creatives →</a>
+      </div>
+    </section>
+
+    <!-- ===================== Final CTA ===================== -->
+    <section class="section section-final">
+      <div class="container narrow center">
+        <h2>Your next ad creative is 30 seconds away</h2>
+        <p>Stop guessing. Build a prompt that was engineered to sell.</p>
+        <a class="btn btn-primary btn-lg" href="#builder">Build My Free Prompt →</a>
+        <p class="microcopy">Free forever · No sign-up · Works with every major AI image tool</p>
+      </div>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section class="section" id="faq">
+      <div class="container narrow">
+        <h2>Frequently asked questions</h2>
+        <details>
+          <summary>What is an AI product photography prompt builder?</summary>
+          <p>It's a tool that assembles a complete, detailed text prompt for AI image generators by letting you select your product type, platform, and visual style — instead of writing prompts manually or copying generic examples.</p>
+        </details>
+        <details>
+          <summary>Do these prompts work with Midjourney / GPT Image / ImagineArt?</summary>
+          <p>Yes. PromptShot outputs plain-text prompts tuned to work across major AI image tools, including GPT Image, ImagineArt, Freepik, Midjourney, and Flux.</p>
+        </details>
+        <details>
+          <summary>Is PromptShot really free?</summary>
+          <p>Yes — the builder is free with no sign-up. PromptShot earns through partnerships with some of the AI tools we link to (clearly marked), which keeps the builder free for you.</p>
+        </details>
+        <details>
+          <summary>What makes a good product photography prompt?</summary>
+          <p>Specificity: product material and finish, lighting setup, camera angle, background/scene, and — for ads — platform-safe composition so text and hooks stay visible. The builder handles all five for you.</p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p class="disclosure"><strong>Affiliate disclosure:</strong> PromptShot participates in affiliate programs with some of the AI tools linked on this page (marked with ↗). If you sign up or purchase through those links, we may earn a commission at no additional cost to you. This is how the builder stays free.</p>
+      <p class="footer-meta">
+        © <span id="year">2026</span> PromptShot ·
+        <a href="#builder">Prompt builder</a> ·
+        <a href="#ai-tools">AI tools</a> ·
+        <!-- TODO: replace # with the real Fiverr gig URL -->
+        <a href="#" data-placeholder="fiverr-gig">Custom ad creatives</a> ·
+        <a href="#faq">FAQ</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
