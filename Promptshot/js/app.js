@@ -175,13 +175,95 @@
   /* Styles whose scene fights marketplace white-background rules */
   var MARKETPLACE_CONFLICTS = ["lifestyle", "flatlay", "splash", "ugc"];
 
+  /* ---------------------------------------------------------
+     Product-photo reference mode.
+     The photo is analyzed on a canvas in the browser — it is
+     never uploaded anywhere. We extract dominant colors and
+     write a color story into the prompt; the prompt itself
+     switches to "restage the attached product" language.
+     --------------------------------------------------------- */
+  var COLOR_ANCHORS = [
+    ["black", 10, 10, 10], ["charcoal", 54, 57, 63], ["slate gray", 112, 128, 144],
+    ["gray", 128, 128, 128], ["silver", 192, 192, 192], ["white", 250, 250, 250],
+    ["cream", 245, 240, 225], ["beige", 217, 199, 167], ["tan", 200, 161, 101],
+    ["caramel brown", 160, 106, 60], ["brown", 123, 74, 45], ["chocolate brown", 78, 46, 30],
+    ["maroon", 94, 26, 36], ["crimson", 142, 30, 47], ["red", 192, 57, 43],
+    ["orange", 230, 126, 34], ["amber", 243, 156, 18], ["gold", 212, 175, 55],
+    ["yellow", 241, 196, 15], ["khaki", 183, 169, 122], ["olive", 107, 142, 35],
+    ["green", 39, 174, 96], ["forest green", 30, 86, 49], ["teal", 22, 134, 124],
+    ["cyan", 41, 182, 216], ["sky blue", 116, 185, 232], ["blue", 47, 109, 208],
+    ["navy blue", 26, 42, 86], ["purple", 108, 63, 160], ["violet", 142, 108, 201],
+    ["magenta", 194, 57, 155], ["pink", 232, 143, 180], ["rose", 217, 106, 126]
+  ];
+
+  function nameColor(r, g, b) {
+    var best = COLOR_ANCHORS[0], bestDist = Infinity;
+    for (var i = 0; i < COLOR_ANCHORS.length; i++) {
+      var c = COLOR_ANCHORS[i];
+      var d = (r - c[1]) * (r - c[1]) + (g - c[2]) * (g - c[2]) + (b - c[3]) * (b - c[3]);
+      if (d < bestDist) { bestDist = d; best = c; }
+    }
+    return best[0];
+  }
+
+  function toHex(r, g, b) {
+    function h(n) { var s = n.toString(16); return s.length === 1 ? "0" + s : s; }
+    return "#" + h(r) + h(g) + h(b);
+  }
+
+  /* Dominant colors from an <img>: downscale to a small canvas,
+     skip transparent + near-white background pixels, bucket the
+     rest, return up to 3 uniquely-named colors by frequency. */
+  function extractPalette(imgEl) {
+    var SIZE = 48;
+    try {
+      var canvas = document.createElement("canvas");
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(imgEl, 0, 0, SIZE, SIZE);
+      var data = ctx.getImageData(0, 0, SIZE, SIZE).data;
+
+      var buckets = {};
+      for (var i = 0; i < data.length; i += 4) {
+        var r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+        if (a < 200) continue;
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        var sat = max === 0 ? 0 : (max - min) / max;
+        if (lum > 242 && sat < 0.1) continue; // near-white studio background
+        var key = (r >> 5) + "," + (g >> 5) + "," + (b >> 5);
+        var bk = buckets[key] || (buckets[key] = { n: 0, r: 0, g: 0, b: 0 });
+        bk.n++; bk.r += r; bk.g += g; bk.b += b;
+      }
+
+      var sorted = Object.keys(buckets)
+        .map(function (k) { return buckets[k]; })
+        .sort(function (x, y) { return y.n - x.n; });
+
+      var palette = [], seen = {};
+      for (var j = 0; j < sorted.length && palette.length < 3; j++) {
+        var bkt = sorted[j];
+        var ar = Math.round(bkt.r / bkt.n), ag = Math.round(bkt.g / bkt.n), ab = Math.round(bkt.b / bkt.n);
+        var name = nameColor(ar, ag, ab);
+        if (seen[name]) continue;
+        seen[name] = true;
+        palette.push({ name: name, hex: toHex(ar, ag, ab) });
+      }
+      return palette;
+    } catch (e) {
+      return []; // analysis is best-effort; prompt still works without it
+    }
+  }
+
   /* --------------------------- state --------------------------- */
   var state = {
     product: "accessories",
     platform: "tiktok",
     style: "studio",
     desc: "",
-    mjMode: false
+    mjMode: false,
+    refImage: null // { name, url, palette: [{name, hex}] } when a product photo is added
   };
 
   /* --------------------------- dom --------------------------- */
@@ -197,7 +279,16 @@
     generateBtns: document.getElementById("generate-btns"),
     compatNote: document.getElementById("compat-note"),
     mjMode: document.getElementById("mj-mode"),
-    year: document.getElementById("year")
+    year: document.getElementById("year"),
+    dropzone: document.getElementById("dropzone"),
+    photoInput: document.getElementById("product-photo"),
+    dropzoneHint: document.getElementById("dropzone-hint"),
+    dropzonePreview: document.getElementById("dropzone-preview"),
+    refThumb: document.getElementById("ref-thumb"),
+    refName: document.getElementById("ref-name"),
+    refSwatches: document.getElementById("ref-swatches"),
+    refRemove: document.getElementById("ref-remove"),
+    attachNote: document.getElementById("attach-note")
   };
 
   function findById(list, id) {
@@ -205,6 +296,10 @@
       if (list[i].id === id) return list[i];
     }
     return list[0];
+  }
+
+  function sentenceCase(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   /* ------------------------ prompt assembly ------------------------ */
@@ -219,14 +314,42 @@
       scene = state.mjMode ? platform.whiteSceneMJ : platform.whiteScene;
     }
 
-    var parts = [
-      style.opener + " of " + subject + ", " + product.detail,
-      scene,
-      style.lighting,
-      style.camera,
-      platform.composition,
-      state.mjMode ? QUALITY_TAIL_MJ : QUALITY_TAIL
-    ];
+    /* Reference mode: a product photo is attached and the target tool can
+       see it alongside the text (Midjourney can't — it takes the image as
+       an Omni-Reference instead, so its prompt stays descriptive). */
+    var referenceMode = !!state.refImage && !state.mjMode;
+
+    var parts;
+    if (referenceMode) {
+      var desc = state.desc.trim();
+      parts = [
+        style.opener + " restaging the exact product from the attached reference photo" + (desc ? " — " + desc : ""),
+        "Preserve complete fidelity to the reference product: identical shape and proportions, exact materials, colors and textures, label text and logo placement unchanged — do not redesign the product or invent new details",
+        sentenceCase(product.detail),
+        scene,
+        style.lighting,
+        style.camera,
+        platform.composition
+      ];
+      if (state.refImage.palette.length > 1) {
+        parts.push("Color story: scene tones chosen to complement the product's dominant " +
+          state.refImage.palette[0].name + " and " + state.refImage.palette[1].name +
+          " so it pops cleanly against the backdrop");
+      } else if (state.refImage.palette.length === 1) {
+        parts.push("Color story: scene tones chosen to complement the product's dominant " +
+          state.refImage.palette[0].name + " so it pops cleanly against the backdrop");
+      }
+      parts.push(QUALITY_TAIL);
+    } else {
+      parts = [
+        style.opener + " of " + subject + ", " + product.detail,
+        scene,
+        style.lighting,
+        style.camera,
+        platform.composition,
+        state.mjMode ? QUALITY_TAIL_MJ : QUALITY_TAIL
+      ];
+    }
 
     var prompt = parts.join(". ") + ".";
 
@@ -252,6 +375,16 @@
       els.compatNote.hidden = false;
     } else {
       els.compatNote.hidden = true;
+    }
+
+    /* photo reference reminder */
+    if (state.refImage) {
+      els.attachNote.textContent = state.mjMode
+        ? "📎 Midjourney can't see attachments in text prompts — drag your photo into the imagine bar as an Omni-Reference (--oref) so the exact product is preserved, and raise --ow if it drifts."
+        : "📎 This prompt references your photo — attach the same image in the AI tool when you run it.";
+      els.attachNote.hidden = false;
+    } else {
+      els.attachNote.hidden = true;
     }
   }
 
@@ -312,6 +445,94 @@
 
   els.mjMode.addEventListener("change", function () {
     state.mjMode = els.mjMode.checked;
+    update();
+  });
+
+  /* ---------------- product photo handling ---------------- */
+  function setRefImage(file) {
+    if (!file || file.type.indexOf("image/") !== 0) return;
+    clearRefImage();
+
+    var url = URL.createObjectURL(file);
+    var probe = new Image();
+    probe.onload = function () {
+      state.refImage = { name: file.name || "pasted image", url: url, palette: extractPalette(probe) };
+
+      els.refThumb.src = url;
+      els.refName.textContent = state.refImage.name;
+      els.refSwatches.innerHTML = "";
+      state.refImage.palette.forEach(function (c) {
+        var dot = document.createElement("i");
+        dot.style.background = c.hex;
+        dot.title = c.name;
+        els.refSwatches.appendChild(dot);
+      });
+      if (state.refImage.palette.length === 0) {
+        els.refSwatches.textContent = "—";
+      }
+
+      els.dropzoneHint.hidden = true;
+      els.dropzonePreview.hidden = false;
+      update();
+    };
+    probe.onerror = function () { URL.revokeObjectURL(url); };
+    probe.src = url;
+  }
+
+  function clearRefImage() {
+    if (state.refImage) {
+      URL.revokeObjectURL(state.refImage.url);
+      state.refImage = null;
+    }
+    els.photoInput.value = "";
+    els.dropzoneHint.hidden = false;
+    els.dropzonePreview.hidden = true;
+  }
+
+  els.dropzone.addEventListener("click", function (e) {
+    if (e.target === els.refRemove) return;
+    els.photoInput.click();
+  });
+  els.dropzone.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      els.photoInput.click();
+    }
+  });
+  els.photoInput.addEventListener("change", function () {
+    if (els.photoInput.files && els.photoInput.files[0]) setRefImage(els.photoInput.files[0]);
+  });
+
+  ["dragover", "dragenter"].forEach(function (evt) {
+    els.dropzone.addEventListener(evt, function (e) {
+      e.preventDefault();
+      els.dropzone.classList.add("dragover");
+    });
+  });
+  ["dragleave", "drop"].forEach(function (evt) {
+    els.dropzone.addEventListener(evt, function (e) {
+      e.preventDefault();
+      els.dropzone.classList.remove("dragover");
+    });
+  });
+  els.dropzone.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setRefImage(e.dataTransfer.files[0]);
+    }
+  });
+
+  /* Paste an image anywhere on the page (text pastes are untouched) */
+  document.addEventListener("paste", function (e) {
+    if (e.clipboardData && e.clipboardData.files && e.clipboardData.files[0] &&
+        e.clipboardData.files[0].type.indexOf("image/") === 0) {
+      e.preventDefault();
+      setRefImage(e.clipboardData.files[0]);
+      els.dropzone.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  });
+
+  els.refRemove.addEventListener("click", function () {
+    clearRefImage();
     update();
   });
 

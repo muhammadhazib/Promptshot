@@ -60,6 +60,14 @@
           "@type": "Answer",
           "text": "Specificity: product material and finish, lighting setup, camera angle, background/scene, and — for ads — platform-safe composition so text and hooks stay visible. The builder handles all five for you."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use my own product photos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Add your product photo in the builder and PromptShot switches to an image-reference prompt: it instructs the AI to preserve your exact product — shape, materials, colors, label and logo — while restaging it in the scene, lighting and platform format you picked. It also reads your photo's dominant colors in your browser (the image is never uploaded) and writes a matching color story into the prompt. Attach the same photo in your AI tool when you run it."
+        }
       }
     ]
   }
@@ -156,6 +164,22 @@
                 <input type="text" id="product-desc" name="product-desc" maxlength="140" autocomplete="off"
                        placeholder="e.g. matte black snapback cap with an embroidered gold logo">
               </div>
+              <div class="field">
+                <label for="product-photo">Add your product photo <span class="hint-inline">(optional — rebuilds the prompt around your exact product)</span></label>
+                <div class="dropzone" id="dropzone" tabindex="0" role="button"
+                     aria-label="Add your product photo — click, drop or paste an image">
+                  <input type="file" id="product-photo" accept="image/*" hidden>
+                  <span class="dropzone-hint" id="dropzone-hint">Click, drop or paste an image — analyzed in your browser, never uploaded</span>
+                  <div class="dropzone-preview" id="dropzone-preview" hidden>
+                    <img id="ref-thumb" alt="Your product photo">
+                    <div class="ref-meta">
+                      <span class="ref-name" id="ref-name"></span>
+                      <span class="ref-palette-label">Detected palette: <span class="ref-swatches" id="ref-swatches"></span></span>
+                    </div>
+                    <button type="button" class="ref-remove" id="ref-remove" aria-label="Remove photo" title="Remove photo">×</button>
+                  </div>
+                </div>
+              </div>
             </fieldset>
 
             <fieldset class="step">
@@ -179,6 +203,7 @@
               <span class="output-count" id="word-count"></span>
             </div>
             <p class="output-text" id="prompt-output" aria-live="polite"></p>
+            <p class="attach-note" id="attach-note" hidden></p>
             <label class="mj-toggle">
               <input type="checkbox" id="mj-mode">
               Midjourney mode <span class="hint-inline">(appends --ar and --no flags)</span>
@@ -315,6 +340,10 @@
         <details>
           <summary>What makes a good product photography prompt?</summary>
           <p>Specificity: product material and finish, lighting setup, camera angle, background/scene, and — for ads — platform-safe composition so text and hooks stay visible. The builder handles all five for you.</p>
+        </details>
+        <details>
+          <summary>Can I use my own product photos?</summary>
+          <p>Yes. Add your product photo in the builder and PromptShot switches to an image-reference prompt: it instructs the AI to preserve your exact product — shape, materials, colors, label and logo — while restaging it in the scene, lighting and platform format you picked. It also reads your photo's dominant colors (in your browser — the image is never uploaded) and writes a matching color story into the prompt. Attach the same photo in your AI tool when you run it.</p>
         </details>
       </div>
     </section>

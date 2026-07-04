@@ -48,3 +48,5 @@ Search the code for `TODO` to find every spot. In short:
 - **Quality tail** → commercial photography grading terms
 
 Special cases: marketplace listings force a pure-white compliant background over any scene-based style (with an explanatory note in the UI), and Midjourney mode strips negative words from prose (MJ treats them as attractors) in favor of `--no` flags, plus `--ar` and `--style raw`.
+
+**Product photo reference mode:** users can add their own product photo (click / drop / paste). The prompt then switches to image-reference language — preserve the exact product, restage the scene — and the photo's dominant colors (extracted on a canvas in the browser; nothing is uploaded) drive a "color story" line. Midjourney is the exception: its prompt stays descriptive and the UI tells the user to supply the photo as an Omni-Reference (`--oref`).

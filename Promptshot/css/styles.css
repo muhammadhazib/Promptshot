@@ -26,6 +26,9 @@
 
 * { box-sizing: border-box; }
 
+/* keep the hidden attribute authoritative over display rules on classes */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -278,6 +281,81 @@ a { color: var(--accent); }
 }
 .field input:focus { border-color: var(--accent); outline: none; }
 .field input::placeholder { color: #5d6579; }
+
+/* Product photo dropzone */
+.dropzone {
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+.dropzone:hover, .dropzone:focus-visible, .dropzone.dragover { border-color: var(--accent); }
+.dropzone-hint {
+  display: block;
+  font-size: 0.86rem;
+  color: #5d6579;
+  text-align: center;
+  padding: 6px 0;
+}
+.dropzone-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dropzone-preview img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  flex: none;
+}
+.ref-meta { min-width: 0; }
+.ref-name {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ref-palette-label { font-size: 0.78rem; color: var(--muted); }
+.ref-swatches { display: inline-flex; gap: 4px; vertical-align: middle; margin-left: 2px; }
+.ref-swatches i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border-strong);
+  display: inline-block;
+}
+.ref-remove {
+  margin-left: auto;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--card-2);
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.ref-remove:hover { color: var(--text); border-color: var(--accent); }
+
+/* "Attach your photo in the tool" reminder under the output */
+.attach-note {
+  font-size: 0.84rem;
+  color: var(--muted);
+  background: var(--card-2);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 0 0 14px;
+}
 
 .compat-note {
   font-size: 0.86rem;
